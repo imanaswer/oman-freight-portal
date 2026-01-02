@@ -41,6 +41,8 @@
     --steel-light: 210 20% 70%;
     --off-white: 210 20% 98%;
     --cream: 40 20% 96%;
+    --olive: 65 20% 35%;
+    --olive-light: 65 15% 90%;
   }
 
   .dark {
@@ -121,10 +123,62 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Image card with frame effect */
+  .image-card {
+    @apply relative rounded-2xl overflow-hidden;
+  }
+
+  .image-card::before {
+    content: '';
+    @apply absolute -inset-2 rounded-3xl bg-primary/10 -z-10;
+  }
+
+  /* Floating animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Number badge */
+  .number-badge {
+    @apply relative inline-flex items-center justify-center;
+  }
+
+  .number-badge::before {
+    content: '';
+    @apply absolute w-16 h-16 rounded-full bg-olive-light -z-10;
+  }
 }
 
 @layer utilities {
   .gradient-navy {
     background: linear-gradient(180deg, hsl(var(--navy)) 0%, hsl(var(--navy-light)) 100%);
   }
+
+  /* Parallax effect */
+  .parallax {
+    transform-style: preserve-3d;
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -15px hsl(var(--navy) / 0.15);
+  }
+
+  /* Stagger children animation delays */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
 }
