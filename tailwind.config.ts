@@ -55,6 +55,10 @@ export default {
           DEFAULT: "hsl(var(--steel))",
           light: "hsl(var(--steel-light))",
         },
+        olive: {
+          DEFAULT: "hsl(var(--olive))",
+          light: "hsl(var(--olive-light))",
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
