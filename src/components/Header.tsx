@@ -51,7 +51,7 @@ const Header = () => {
           </Button>
           <Button size="sm" asChild>
             <a
-              href="https://wa.me/96812345678"
+              href="https://api.whatsapp.com/send?phone=96896128466"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -105,7 +105,7 @@ const Header = () => {
                 </Button>
                 <Button asChild className="w-full">
                   <a
-                    href="https://wa.me/96812345678"
+                    href="https://api.whatsapp.com/send?phone=96896128466"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

@@ -20,8 +20,9 @@ const contactMethods = [
     icon: MessageCircle,
     title: "WhatsApp",
     subtitle: "Instant Support",
-    value: "+968 1234 5678",
-    action: "https://wa.me/96812345678",
+    value: "+968 96128466", 
+    // FIX: Changed to api.whatsapp.com to fix connection error
+    action: "https://api.whatsapp.com/send?phone=96896128466",
     external: true,
     copyable: false,
   },
@@ -30,8 +31,8 @@ const contactMethods = [
     icon: Phone,
     title: "Call Us",
     subtitle: "Mon-Thu, 8am-5pm",
-    value: "+968 1234 5678",
-    action: "tel:+96812345678",
+    value: "+968 96128466", 
+    action: "tel:+96896128466",
     copyable: true,
   },
   {
@@ -292,7 +293,8 @@ const ContactPage = () => {
                           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                              <Button size="lg" variant="outline" className="w-full h-12 md:h-14 text-base font-bold border-white/10 text-white hover:bg-white/5 hover:text-white hover:border-white/20 backdrop-blur-md" asChild>
                                 <a
-                                   href="https://wa.me/96128466"
+                                   // FIX: Changed to api.whatsapp.com to fix connection error
+                                   href="https://api.whatsapp.com/send?phone=96896128466"
                                    target="_blank"
                                    rel="noopener noreferrer"
                                 >
