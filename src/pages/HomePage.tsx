@@ -1,15 +1,25 @@
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { useState, useRef, useEffect, MouseEvent } from "react";
+import { 
+  motion, 
+  useScroll, 
+  useTransform, 
+  useSpring, 
+  useInView, 
+  useMotionValue, 
+  useMotionTemplate, 
+  AnimatePresence 
+} from "framer-motion";
 import { Link } from "react-router-dom";
-import { Plane, Ship, Truck, Warehouse, Package, FileText, ArrowRight, CheckCircle } from "lucide-react";
+import { Plane, Ship, Truck, Warehouse, Package, FileText, ArrowRight, CheckCircle, Globe, Anchor, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedSection from "@/components/AnimatedSection";
-import ServiceShowcase from "@/components/ServiceShowcase";
 
 import heroImage from "@/assets/hero-port.jpg";
 import airFreightImage from "@/assets/air-freight.jpg";
 import oceanFreightImage from "@/assets/ocean-freight.jpg";
 import landTransportImage from "@/assets/land-transport.jpg";
 
+// --- DATA ---
 const services = [
   {
     icon: Plane,
@@ -28,7 +38,7 @@ const services = [
   },
   {
     icon: Warehouse,
-    title: "Warehousing & Packing",
+    title: "Warehousing",
     description: "Secure storage facilities and professional packing services for all cargo types.",
   },
   {
@@ -47,356 +57,315 @@ const featuredServices = [
   {
     number: "01",
     title: "Air Freight",
-    description: "Swift air cargo solutions for time-critical shipments. We ensure your goods reach their destination with speed and precision.",
+    description: "Swift air cargo solutions for time-critical shipments.",
     image: airFreightImage,
     link: "/services#air",
   },
   {
     number: "02",
     title: "Ocean Freight",
-    description: "Our expert team optimizes shipping routes and estimates the lowest possible cost by adhering to strict confirmative with timing and delivery.",
+    description: "Optimized shipping routes with lowest possible costs.",
     image: oceanFreightImage,
     link: "/services#ocean",
   },
   {
     number: "03",
     title: "Land Transport",
-    description: "Trained personnel who are well acquainted with the technical possibilities and exact legal regulations offer comprehensive road freight.",
+    description: "Comprehensive road freight across the GCC.",
     image: landTransportImage,
     link: "/services#land",
   },
 ];
 
-const whyChooseUs = [
-  {
-    title: "Established Expertise",
-    description: "Years of experience in international freight forwarding and logistics operations.",
-  },
-  {
-    title: "Global Network",
-    description: "Strong partnerships with carriers and agents across major trade routes worldwide.",
-  },
-  {
-    title: "Personalized Service",
-    description: "Dedicated account management and customized solutions for your specific needs.",
-  },
-  {
-    title: "End-to-End Handling",
-    description: "Complete logistics support from pickup to final delivery, all under one roof.",
-  },
-];
+// --- PREMIUM COMPONENTS ---
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
+// 1. Spotlight Card Effect
+const SpotlightCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <div
+      className={`group relative border border-border/50 bg-card/40 overflow-hidden ${className}`}
+      onMouseMove={handleMouseMove}
+    >
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              rgba(var(--primary-rgb), 0.1),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      <div className="relative h-full">{children}</div>
+    </div>
+  );
 };
 
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
-  },
+// 2. Character Split Text
+const RevealTitle = ({ text, className="" }: { text: string, className?: string }) => {
+  return (
+    <h1 className={`${className} overflow-hidden`}>
+      <span className="sr-only">{text}</span>
+      <span className="block overflow-hidden" aria-hidden="true">
+        {text.split("").map((char, i) => (
+          <motion.span
+            key={i}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 + i * 0.03, ease: [0.2, 0.65, 0.3, 0.9] }}
+            className="inline-block origin-bottom"
+          >
+            {char === " " ? "\u00A0" : char}
+          </motion.span>
+        ))}
+      </span>
+    </h1>
+  );
 };
+
+// 3. Infinite Scrolling Marquee
+const Marquee = ({ text, reverse = false }: { text: string; reverse?: boolean }) => {
+  return (
+    <div className="flex overflow-hidden whitespace-nowrap bg-olive text-white py-4 select-none">
+      <motion.div
+        className="flex gap-8 text-2xl font-bold uppercase tracking-widest"
+        animate={{ x: reverse ? [0, -1000] : [-1000, 0] }}
+        transition={{ repeat: Infinity, ease: "linear", duration: 20 }}
+      >
+        {[...Array(10)].map((_, i) => (
+          <span key={i} className="flex items-center gap-4">
+            {text} <Globe className="w-5 h-5 opacity-50" />
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
+// 4. Parallax Image
+const ParallaxImage = ({ src, alt }: { src: string; alt: string }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
+
+  return (
+    <div ref={ref} className="overflow-hidden h-full w-full rounded-2xl relative group">
+      <motion.div style={{ y, scale }} className="h-[120%] w-full -mt-[10%]">
+        <img src={src} alt={alt} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      </motion.div>
+      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
+    </div>
+  );
+};
+
+// --- MAIN PAGE ---
 
 const HomePage = () => {
   const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 500], [0, 150]);
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
+  const heroY = useTransform(scrollY, [0, 1000], [0, 400]);
+  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
 
   return (
-    <article>
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background Image with Parallax */}
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="absolute inset-0 z-0"
-        >
-          <img
-            src={heroImage}
-            alt="Container port at twilight"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-primary/80" />
+    <div className="overflow-x-hidden bg-background">
+      
+      {/* 1. HERO SECTION (Cinematic Entry) */}
+      <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden bg-black">
+        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
+          <img src={heroImage} alt="Hero" className="w-full h-full object-cover opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         </motion.div>
 
-        <div className="container-custom relative z-10 py-32">
-          <div className="max-w-3xl">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block text-sm font-medium tracking-wider text-steel-light uppercase mb-6"
-            >
-              International Freight Forwarding
-            </motion.span>
+        <div className="container-custom relative z-10">
+          <div className="max-w-6xl">
+             <motion.div
+               initial={{ opacity: 0, x: -50 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ duration: 1, delay: 0.5 }}
+               className="flex items-center gap-4 mb-6"
+             >
+                <div className="h-[2px] w-20 bg-olive"></div>
+                <span className="text-olive font-bold tracking-[0.3em] uppercase">Global Logistics Partner</span>
+             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-primary-foreground text-balance mb-6"
-            >
-              From Oman to the World
-            </motion.h1>
+             <div className="mb-8">
+               <RevealTitle 
+                 text="Beyond Borders" 
+                 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.9]"
+               />
+               <RevealTitle 
+                 text="Beyond Expectations" 
+                 className="text-7xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500 tracking-tighter leading-[0.9]" 
+               />
+             </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mb-10 leading-relaxed"
-            >
-              Comprehensive air, sea, and land logistics solutions. We handle your freight with precision,
-              ensuring reliable delivery and complete peace of mind.
-            </motion.p>
+             <motion.p
+               initial={{ opacity: 0, y: 30 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.8, delay: 1 }}
+               className="text-xl text-slate-300 max-w-2xl mb-12 font-light leading-relaxed"
+             >
+               Comprehensive air, sea, and land logistics solutions. We handle your freight with precision, ensuring reliable delivery and complete peace of mind.
+             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4"
+             <motion.div 
+               initial={{ opacity: 0, y: 30 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.8, delay: 1.2 }}
+               className="flex gap-6"
             >
-              <Button size="lg" variant="secondary" asChild className="group">
-                <a href="mailto:info@fastshipping.om">
-                  Email Us
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </Button>
-              <Button size="lg" variant="hero-outline" asChild>
-                <a
-                  href="https://wa.me/96812345678"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  WhatsApp Us
-                </a>
-              </Button>
-            </motion.div>
+                <Button size="lg" className="rounded-full h-16 px-10 text-lg bg-white text-black hover:bg-slate-200 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]" asChild>
+                   <Link to="/services">
+                      Our Services <ArrowRight className="ml-2 w-5 h-5" />
+                   </Link>
+                </Button>
+                <Button size="lg" variant="outline" className="rounded-full h-16 px-10 text-lg border-white/20 text-white hover:bg-white/10 backdrop-blur-md" asChild>
+                   <Link to="/contact">Contact Us</Link>
+                </Button>
+             </motion.div>
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="w-6 h-10 border-2 border-primary-foreground/30 rounded-full flex justify-center"
-          >
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="w-1.5 h-3 bg-primary-foreground/50 rounded-full mt-2"
-            />
-          </motion.div>
-        </motion.div>
       </section>
 
-      {/* Featured Services Showcase */}
-      <section className="section-padding bg-olive-light/30">
-        <div className="container-custom">
-          <AnimatedSection className="text-center max-w-2xl mx-auto mb-20">
-            <span className="inline-block text-sm font-medium tracking-wider text-olive uppercase mb-4">
-              Our Core Services
-            </span>
-            <h2 className="mb-4">What We Deliver</h2>
-            <p className="text-muted-foreground">
-              End-to-end logistics solutions tailored to your business requirements.
-              From air to ocean to land, we've got you covered.
-            </p>
+      {/* 2. MARQUEE STRIP */}
+      <section className="relative z-20 -rotate-1 bg-olive border-y-4 border-black/10">
+         <Marquee text="FAST • RELIABLE • SECURE • GLOBAL •" />
+      </section>
+
+      {/* 3. FEATURED SHOWCASE (Parallax Cards) */}
+      <section className="section-padding bg-background relative overflow-hidden">
+        <div className="container-custom relative z-10">
+          <AnimatedSection className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
+             <div className="max-w-2xl">
+                <span className="text-olive font-bold tracking-widest uppercase text-sm mb-2 block">What We Do</span>
+                <h2 className="text-5xl md:text-6xl font-bold leading-tight">Masters of <br/>Movement</h2>
+             </div>
+             <p className="text-muted-foreground max-w-sm text-lg">
+                End-to-end logistics solutions tailored to your business requirements. From air to ocean to land.
+             </p>
           </AnimatedSection>
 
           <div className="space-y-32">
             {featuredServices.map((service, index) => (
-              <ServiceShowcase
-                key={service.title}
-                number={service.number}
-                title={service.title}
-                description={service.description}
-                image={service.image}
-                link={service.link}
-                reverse={index % 2 === 1}
-              />
+               <AnimatedSection key={service.title}>
+                  <div className={`flex flex-col lg:flex-row gap-16 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+                     <div className="flex-1 space-y-8">
+                        <span className="text-9xl font-black text-foreground/5 block leading-none -mb-10 select-none">{service.number}</span>
+                        <h3 className="text-4xl font-bold">{service.title}</h3>
+                        <p className="text-xl text-muted-foreground leading-relaxed">{service.description}</p>
+                        <ul className="space-y-3">
+                           {["Real-time Tracking", "Customs Handling", "Express Delivery"].map((item) => (
+                              <li key={item} className="flex items-center gap-3 text-foreground/80 font-medium">
+                                 <CheckCircle className="w-5 h-5 text-olive" /> {item}
+                              </li>
+                           ))}
+                        </ul>
+                        <Button variant="link" className="p-0 text-lg text-olive hover:text-olive-light" asChild>
+                           <Link to={service.link}>Learn More <ArrowRight className="w-5 h-5 ml-2" /></Link>
+                        </Button>
+                     </div>
+                     <div className="flex-1 w-full aspect-[4/3]">
+                        <ParallaxImage src={service.image} alt={service.title} />
+                     </div>
+                  </div>
+               </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
 
-      {/* All Services Grid */}
-      <section className="section-padding bg-background" id="services-overview">
-        <div className="container-custom">
-          <AnimatedSection className="text-center max-w-2xl mx-auto mb-16">
-            <span className="inline-block text-sm font-medium tracking-wider text-steel uppercase mb-4">
-              Complete Solutions
-            </span>
-            <h2 className="mb-4">All Our Services</h2>
-            <p className="text-muted-foreground">
-              Discover our full range of logistics and freight forwarding services.
-            </p>
-          </AnimatedSection>
+      {/* 4. SERVICES GRID (Spotlight Effect) */}
+      <section className="py-32 bg-[#0a0f1c] text-white relative">
+         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e293b,transparent)] opacity-40"></div>
+         
+         <div className="container-custom hero-container relative z-10">
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {services.map((service) => (
-              <motion.article
-                key={service.title}
-                variants={itemVariants}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="group bg-card border border-border rounded-xl p-8 hover:border-steel/30 hover:shadow-xl transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-6 group-hover:bg-steel/10 group-hover:scale-110 transition-all duration-300">
-                  <service.icon className="w-6 h-6 text-steel" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-3">{service.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{service.description}</p>
-              </motion.article>
-            ))}
-          </motion.div>
-
-          <AnimatedSection delay={0.4} className="text-center mt-12">
-            <Button variant="outline" size="lg" asChild className="group">
-              <Link to="/services">
-                View All Services
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="section-padding bg-secondary">
-        <div className="container-custom">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <AnimatedSection>
-              <span className="inline-block text-sm font-medium tracking-wider text-steel uppercase mb-4">
-                Why Choose Us
-              </span>
-              <h2 className="mb-6">Your Trusted Logistics Partner</h2>
-              <p className="text-muted-foreground mb-8">
-                With extensive experience in international freight forwarding, we understand the complexities
-                of global trade. Our commitment to reliability, compliance, and customer satisfaction sets us apart.
-              </p>
-
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="space-y-6"
-              >
-                {whyChooseUs.map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    variants={itemVariants}
-                    className="flex gap-4 group"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-olive-light flex items-center justify-center flex-shrink-0 group-hover:bg-olive group-hover:scale-110 transition-all duration-300">
-                      <CheckCircle className="w-4 h-4 text-olive group-hover:text-olive-light transition-colors" />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-medium text-foreground mb-1">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.2}>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className="bg-card border border-border rounded-2xl p-10 shadow-lg"
-              >
-                <h3 className="text-2xl font-semibold mb-4">Ready to Ship?</h3>
-                <p className="text-muted-foreground mb-8">
-                  Get in touch with our team to discuss your logistics requirements.
-                  We're here to help you move your cargo efficiently.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" asChild className="flex-1 group">
-                    <a href="mailto:info@fastshipping.om">
-                      Email Us
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </Button>
-                  <Button size="lg" variant="outline" asChild className="flex-1">
-                    <a
-                      href="https://wa.me/96812345678"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      WhatsApp
-                    </a>
-                  </Button>
-                </div>
-              </motion.div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="section-padding bg-primary relative overflow-hidden">
-        {/* Animated background shapes */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.15, 0.1],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-steel-light/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.1, 0.15, 0.1],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-steel-light/20 rounded-full blur-3xl"
-        />
-
-        <div className="container-custom text-center relative z-10">
-          <AnimatedSection>
-            <h2 className="text-primary-foreground mb-4">Let's Move Your Cargo</h2>
-            <p className="text-primary-foreground/80 max-w-xl mx-auto mb-8">
-              Whether you're shipping by air, sea, or land, we have the expertise
-              and network to deliver your goods safely and on time.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild className="group">
-                <Link to="/contact">
-                  Contact Us
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="hero-outline" asChild>
-                <Link to="/services">
-                  Explore Services
-                </Link>
-              </Button>
+            <div className="text-center max-w-3xl mx-auto mb-20">
+               <h2 className="text-4xl md:text-5xl font-bold mb-6">Comprehensive Logistics</h2>
+               <p className="text-slate-400 text-lg">Explore our full range of services designed to streamline your supply chain.</p>
             </div>
-          </AnimatedSection>
-        </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+               {services.map((service) => (
+                  <SpotlightCard key={service.title} className="rounded-2xl p-8 hover:bg-white/5 transition-colors duration-500">
+                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-olive to-emerald-600 flex items-center justify-center mb-6 shadow-lg">
+                        <service.icon className="w-7 h-7 text-white" />
+                     </div>
+                     <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                     <p className="text-slate-400 leading-relaxed mb-6">{service.description}</p>
+                     <div className="flex items-center text-sm font-bold text-olive-light uppercase tracking-wider group-hover:gap-2 transition-all">
+                        View Details <ArrowRight className="w-4 h-4 ml-2" />
+                     </div>
+                  </SpotlightCard>
+               ))}
+            </div>
+         </div>
       </section>
-    </article>
+
+      {/* 5. STATS / TRUST SECTION */}
+      <section className="py-24 bg-olive text-white">
+         <div className="container-custom">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center divide-x divide-white/20">
+               {[
+                  { value: "15+", label: "Years Experience" },
+                  { value: "50+", label: "Countries Served" },
+                  { value: "10k+", label: "Shipments" },
+                  { value: "24/7", label: "Support" },
+               ].map((stat, i) => (
+                  <AnimatedSection delay={i * 0.1} key={i}>
+                     <div className="px-4">
+                        <div className="text-5xl md:text-6xl font-black mb-2">{stat.value}</div>
+                        <div className="text-sm font-bold uppercase tracking-widest opacity-80">{stat.label}</div>
+                     </div>
+                  </AnimatedSection>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* 6. CTA SECTION */}
+      <section className="h-[80vh] relative flex items-center justify-center overflow-hidden bg-background">
+         {/* Animated Background Mesh */}
+         <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+            <motion.div 
+               animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
+               transition={{ duration: 20, repeat: Infinity }}
+               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-olive/20 rounded-full blur-[120px]" 
+            />
+         </div>
+
+         <div className="container-custom relative z-10 text-center">
+            <AnimatedSection>
+               <h2 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter">
+                  READY TO <br /> SHIP?
+               </h2>
+               <p className="text-xl text-muted-foreground max-w-xl mx-auto mb-12">
+                  Join hundreds of businesses that trust us with their logistics. Let's move your business forward.
+               </p>
+               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button size="lg" className="h-20 px-16 text-xl rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-2xl" asChild>
+                     <Link to="/contact">
+                        Get Started <ArrowRight className="ml-3 w-6 h-6" />
+                     </Link>
+                  </Button>
+               </motion.div>
+            </AnimatedSection>
+         </div>
+      </section>
+
+    </div>
   );
 };
 

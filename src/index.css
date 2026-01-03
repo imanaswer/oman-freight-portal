@@ -1,184 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 215 50% 10%;
+    /* --- THE "ONYX & COBALT" PREMIUM PALETTE --- */
+    
+    /* Background: Deep Onyx (Rich, technical dark blue) */
+    --background: 222 47% 5%;  /* #020617 */
+    
+    /* Foreground: Off-white for reduced eye strain */
+    --foreground: 210 40% 98%; /* #f8fafc */
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 50% 10%;
+    /* Card: Slightly lighter than background for hierarchy */
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 50% 10%;
+    /* Popover: Matches card */
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 215 50% 10%;
-    --primary-foreground: 210 20% 98%;
+    /* Primary: Electric Cobalt (High Trust, High Visibility) */
+    --primary: 217 91% 60%; /* #3b82f6 */
+    --primary-foreground: 222 47% 5%;
 
-    --secondary: 210 15% 95%;
-    --secondary-foreground: 215 50% 10%;
+    /* Secondary: Gunmetal (For muted UI elements) */
+    --secondary: 217 33% 15%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 15% 92%;
-    --muted-foreground: 215 20% 45%;
+    /* Muted: Platinum/Silver */
+    --muted: 217 33% 15%;
+    --muted-foreground: 215 20% 70%; 
 
-    --accent: 210 25% 45%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent: For hover states */
+    --accent: 217 91% 60%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Borders: Ultra-subtle integration */
+    --border: 217 33% 15%;
+    --input: 217 33% 15%;
+    --ring: 217 91% 60%;
 
-    --border: 210 20% 88%;
-    --input: 210 20% 88%;
-    --ring: 215 50% 10%;
-
-    --radius: 0.5rem;
-
-    /* Custom tokens */
-    --navy: 215 50% 10%;
-    --navy-light: 215 40% 18%;
-    --steel: 210 25% 45%;
-    --steel-light: 210 20% 70%;
-    --off-white: 210 20% 98%;
-    --cream: 40 20% 96%;
-    --olive: 65 20% 35%;
-    --olive-light: 65 15% 90%;
+    --radius: 0.75rem; 
   }
 
-  .dark {
-    --background: 215 50% 10%;
-    --foreground: 210 20% 98%;
-
-    --card: 215 40% 14%;
-    --card-foreground: 210 20% 98%;
-
-    --popover: 215 40% 14%;
-    --popover-foreground: 210 20% 98%;
-
-    --primary: 210 20% 98%;
-    --primary-foreground: 215 50% 10%;
-
-    --secondary: 215 35% 18%;
-    --secondary-foreground: 210 20% 98%;
-
-    --muted: 215 35% 20%;
-    --muted-foreground: 210 15% 65%;
-
-    --accent: 210 25% 55%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 215 35% 20%;
-    --input: 215 35% 20%;
-    --ring: 210 20% 80%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
+  /* --- GLOBAL RESETS --- */
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground antialiased overflow-x-hidden selection:bg-primary selection:text-white;
+    font-family: 'Manrope', sans-serif;
+    /* Clean numeral spacing for data/logistics numbers */
+    font-feature-settings: "tnum" on, "cv11" on, "ss01" on; 
   }
 
+  /* --- TYPOGRAPHY SYSTEM --- */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight text-foreground;
+    @apply font-bold tracking-tight;
+    /* Prevents widows/orphans in headlines */
+    text-wrap: balance; 
   }
 
+  /* --- THE FIX IS HERE --- */
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl leading-tight;
-  }
+  font-size: clamp(2.2rem, 6cqw, 5rem);
 
-  h2 {
-    @apply text-3xl md:text-4xl leading-tight;
-  }
+  word-break: keep-all;
+  overflow-wrap: normal;
+  white-space: normal;
 
-  h3 {
-    @apply text-xl md:text-2xl;
-  }
+  -webkit-hyphens: none !important;
+  hyphens: none !important;
+}
+h1 span {
+  white-space: pre;
+}
+.hero-container {
+  max-width: 1600px;
+}
 
-  p {
-    @apply text-muted-foreground leading-relaxed;
-  }
+
 }
 
 @layer components {
+  /* --- LAYOUT UTILITIES --- */
   .container-custom {
-    @apply mx-auto px-6 md:px-12 lg:px-20 max-w-7xl;
+    @apply mx-auto w-full max-w-[1400px] px-6 md:px-12 lg:px-20;
   }
 
   .section-padding {
-    @apply py-20 md:py-28 lg:py-32;
+    @apply py-24 md:py-32;
   }
 
-  .text-balance {
-    text-wrap: balance;
+  /* --- PREMIUM TEXT EFFECTS --- */
+  
+  /* Use this class for your large background numbers: className="text-stroke" */
+  .text-stroke {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: transparent;
   }
 
-  /* Image card with frame effect */
-  .image-card {
-    @apply relative rounded-2xl overflow-hidden;
+  .text-stroke-2 {
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.2);
+    color: transparent;
+  }
+  
+  .text-stroke-fill {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.03); 
   }
 
-  .image-card::before {
+  /* --- GLASSMORPHISM --- */
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-xl border border-white/5 shadow-2xl;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  /* --- BUTTON SHINE EFFECT --- */
+  .btn-shine {
+    @apply relative overflow-hidden;
+  }
+  .btn-shine::after {
     content: '';
-    @apply absolute -inset-2 rounded-3xl bg-primary/10 -z-10;
+    @apply absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 transition-all duration-700 ease-in-out;
   }
-
-  /* Floating animation */
-  .float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-
-  /* Number badge */
-  .number-badge {
-    @apply relative inline-flex items-center justify-center;
-  }
-
-  .number-badge::before {
-    content: '';
-    @apply absolute w-16 h-16 rounded-full bg-olive-light -z-10;
+  .btn-shine:hover::after {
+    @apply left-[100%];
   }
 }
 
 @layer utilities {
-  .gradient-navy {
-    background: linear-gradient(180deg, hsl(var(--navy)) 0%, hsl(var(--navy-light)) 100%);
+  /* --- BACKGROUND TEXTURES --- */
+  
+  /* Grainy Noise Overlay */
+  .bg-noise {
+    position: relative;
+  }
+  .bg-noise::before {
+    content: "";
+    @apply absolute inset-0 -z-10 opacity-[0.04] pointer-events-none mix-blend-overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
   }
 
-  /* Parallax effect */
-  .parallax {
-    transform-style: preserve-3d;
+  /* Technical Grid Background */
+  .bg-grid {
+    background-size: 50px 50px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
   }
 
-  /* Hover lift effect */
-  .hover-lift {
-    @apply transition-all duration-300;
+  /* --- ANIMATIONS --- */
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
   }
-
-  .hover-lift:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px -15px hsl(var(--navy) / 0.15);
+  
+  .animate-pulse-slow {
+    animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
+}
 
-  /* Stagger children animation delays */
-  .stagger-1 { animation-delay: 0.1s; }
-  .stagger-2 { animation-delay: 0.2s; }
-  .stagger-3 { animation-delay: 0.3s; }
-  .stagger-4 { animation-delay: 0.4s; }
-  .stagger-5 { animation-delay: 0.5s; }
+/* --- SCROLLBAR CUSTOMIZATION --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5); /* Cobalt hover */
+}
+
+/* --- KEYFRAMES --- */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
 }
