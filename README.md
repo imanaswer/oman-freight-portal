@@ -41,7 +41,7 @@ This project represents a **$10,000+ Agency-Grade** website built for a modern l
 
 1.  **Clone the repository**
     ```bash
-    git clone [https://github.com/your-username/fast-shipping-logistics.git](https://github.com/your-username/fast-shipping-logistics.git)
+    git clone [https://github.com/your-username/fast-shipping-logistics.git]
     ```
 
 2.  **Install dependencies**
