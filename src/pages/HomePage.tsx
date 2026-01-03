@@ -181,13 +181,13 @@ const HomePage = () => {
     <div className="overflow-x-hidden bg-background">
       
       {/* 1. HERO SECTION (Cinematic Entry) */}
-      <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden bg-black">
+      <section className="relative h-screen min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden bg-black">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
           <img src={heroImage} alt="Hero" className="w-full h-full object-cover opacity-60" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         </motion.div>
 
-        <div className="container-custom relative z-10">
+        <div className="container-custom relative z-10 px-4">
           <div className="max-w-6xl">
              <motion.div
                initial={{ opacity: 0, x: -50 }}
@@ -195,18 +195,19 @@ const HomePage = () => {
                transition={{ duration: 1, delay: 0.5 }}
                className="flex items-center gap-4 mb-6"
              >
-                <div className="h-[2px] w-20 bg-olive"></div>
-                <span className="text-olive font-bold tracking-[0.3em] uppercase">Global Logistics Partner</span>
+                <div className="h-[2px] w-12 md:w-20 bg-olive"></div>
+                <span className="text-olive text-sm md:text-base font-bold tracking-[0.3em] uppercase">Global Logistics Partner</span>
              </motion.div>
 
              <div className="mb-8">
+               {/* FIX: Scaled down text for mobile (text-5xl) -> Desktop (text-9xl) */}
                <RevealTitle 
                  text="Beyond Borders" 
-                 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-[0.9]"
+                 className="text-5xl md:text-7xl lg:text-9xl font-black text-white tracking-tighter leading-[0.9] mb-2"
                />
                <RevealTitle 
                  text="Beyond Expectations" 
-                 className="text-7xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500 tracking-tighter leading-[0.9]" 
+                 className="text-5xl md:text-7xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500 tracking-tighter leading-[0.9]" 
                />
              </div>
 
@@ -214,7 +215,7 @@ const HomePage = () => {
                initial={{ opacity: 0, y: 30 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.8, delay: 1 }}
-               className="text-xl text-slate-300 max-w-2xl mb-12 font-light leading-relaxed"
+               className="text-lg md:text-xl text-slate-300 max-w-2xl mb-12 font-light leading-relaxed"
              >
                Comprehensive air, sea, and land logistics solutions. We handle your freight with precision, ensuring reliable delivery and complete peace of mind.
              </motion.p>
@@ -223,14 +224,15 @@ const HomePage = () => {
                initial={{ opacity: 0, y: 30 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.8, delay: 1.2 }}
-               className="flex gap-6"
+               // FIX: Flex-col for mobile stacking
+               className="flex flex-col sm:flex-row gap-4 md:gap-6"
             >
-                <Button size="lg" className="rounded-full h-16 px-10 text-lg bg-white text-black hover:bg-slate-200 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]" asChild>
+                <Button size="lg" className="rounded-full h-14 md:h-16 px-10 text-lg bg-white text-black hover:bg-slate-200 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.4)]" asChild>
                    <Link to="/services">
                       Our Services <ArrowRight className="ml-2 w-5 h-5" />
                    </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="rounded-full h-16 px-10 text-lg border-white/20 text-white hover:bg-white/10 backdrop-blur-md" asChild>
+                <Button size="lg" variant="outline" className="rounded-full h-14 md:h-16 px-10 text-lg border-white/20 text-white hover:bg-white/10 backdrop-blur-md" asChild>
                    <Link to="/contact">Contact Us</Link>
                 </Button>
              </motion.div>
@@ -246,24 +248,27 @@ const HomePage = () => {
       {/* 3. FEATURED SHOWCASE (Parallax Cards) */}
       <section className="section-padding bg-background relative overflow-hidden">
         <div className="container-custom relative z-10">
-          <AnimatedSection className="mb-24 flex flex-col md:flex-row justify-between items-end gap-10">
+          <AnimatedSection className="mb-12 md:mb-24 flex flex-col md:flex-row justify-between items-end gap-6 md:gap-10">
              <div className="max-w-2xl">
                 <span className="text-olive font-bold tracking-widest uppercase text-sm mb-2 block">What We Do</span>
-                <h2 className="text-5xl md:text-6xl font-bold leading-tight">Masters of <br/>Movement</h2>
+                <h2 className="text-4xl md:text-6xl font-bold leading-tight">Masters of <br/>Movement</h2>
              </div>
-             <p className="text-muted-foreground max-w-sm text-lg">
+             <p className="text-muted-foreground max-w-sm text-base md:text-lg">
                 End-to-end logistics solutions tailored to your business requirements. From air to ocean to land.
              </p>
           </AnimatedSection>
 
-          <div className="space-y-32">
+          {/* FIX: Reduced spacing for mobile (space-y-20) */}
+          <div className="space-y-20 md:space-y-32">
             {featuredServices.map((service, index) => (
                <AnimatedSection key={service.title}>
-                  <div className={`flex flex-col lg:flex-row gap-16 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-                     <div className="flex-1 space-y-8">
-                        <span className="text-9xl font-black text-foreground/5 block leading-none -mb-10 select-none">{service.number}</span>
-                        <h3 className="text-4xl font-bold">{service.title}</h3>
-                        <p className="text-xl text-muted-foreground leading-relaxed">{service.description}</p>
+                  {/* FIX: Flex-col for mobile stacking */}
+                  <div className={`flex flex-col lg:flex-row gap-10 md:gap-16 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+                     <div className="flex-1 space-y-6 md:space-y-8">
+                        {/* FIX: Smaller background number on mobile */}
+                        <span className="text-6xl md:text-9xl font-black text-foreground/5 block leading-none -mb-6 md:-mb-10 select-none">{service.number}</span>
+                        <h3 className="text-3xl md:text-4xl font-bold">{service.title}</h3>
+                        <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">{service.description}</p>
                         <ul className="space-y-3">
                            {["Real-time Tracking", "Customs Handling", "Express Delivery"].map((item) => (
                               <li key={item} className="flex items-center gap-3 text-foreground/80 font-medium">
@@ -288,27 +293,26 @@ const HomePage = () => {
      
 
       {/* 4. SERVICES GRID */}
-      <section className="py-32 bg-[#0a0f1c] text-white relative">
+      <section className="py-16 md:py-32 bg-[#0a0f1c] text-white relative">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e293b,transparent)] opacity-40"></div>
         
         <div className="container-custom relative z-10">
-            <div className="text-left max-w-3xl mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Comprehensive Logistics</h2>
+            <div className="text-left max-w-3xl mb-12 md:mb-20">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Comprehensive Logistics</h2>
               <p className="text-slate-400 text-lg">Everything you need to move anything, anywhere.</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((service) => (
-                  // FIX: Removed SpotlightCard wobble. Made entire card a Link.
                   <Link 
                     key={service.title} 
                     to="/services" 
-                    className="group block rounded-2xl p-8 border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/10 transition-all duration-300"
+                    className="group block rounded-2xl p-6 md:p-8 border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/10 transition-all duration-300"
                   >
-                    <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <service.icon className="w-7 h-7 text-primary" />
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <service.icon className="w-6 h-6 md:w-7 md:h-7 text-primary" />
                     </div>
-                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-primary transition-colors">{service.title}</h3>
+                    <h3 className="text-lg md:text-xl font-bold mb-3 text-white group-hover:text-primary transition-colors">{service.title}</h3>
                     <p className="text-slate-400 leading-relaxed mb-6 text-sm">{service.description}</p>
                     
                     <div className="flex items-center text-sm font-bold text-white/50 uppercase tracking-wider group-hover:text-white transition-colors">
@@ -321,9 +325,9 @@ const HomePage = () => {
       </section>
 
       {/* 5. STATS / TRUST SECTION */}
-      <section className="py-24 bg-olive text-white">
+      <section className="py-12 md:py-24 bg-olive text-white">
          <div className="container-custom">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center divide-x divide-white/20">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center md:divide-x divide-white/20">
                {[
                   { value: "15+", label: "Years Experience" },
                   { value: "50+", label: "Countries Served" },
@@ -331,9 +335,9 @@ const HomePage = () => {
                   { value: "24/7", label: "Support" },
                ].map((stat, i) => (
                   <AnimatedSection delay={i * 0.1} key={i}>
-                     <div className="px-4">
-                        <div className="text-5xl md:text-6xl font-black mb-2">{stat.value}</div>
-                        <div className="text-sm font-bold uppercase tracking-widest opacity-80">{stat.label}</div>
+                     <div className="px-2 md:px-4">
+                        <div className="text-4xl md:text-6xl font-black mb-2">{stat.value}</div>
+                        <div className="text-xs md:text-sm font-bold uppercase tracking-widest opacity-80">{stat.label}</div>
                      </div>
                   </AnimatedSection>
                ))}
@@ -342,29 +346,29 @@ const HomePage = () => {
       </section>
 
       {/* 6. CTA SECTION */}
-      <section className="h-[80vh] relative flex items-center justify-center overflow-hidden bg-background">
+      <section className="h-[60vh] md:h-[80vh] min-h-[500px] relative flex items-center justify-center overflow-hidden bg-background">
          {/* Animated Background Mesh */}
          <div className="absolute inset-0 opacity-30">
             <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
             <motion.div 
                animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
                transition={{ duration: 20, repeat: Infinity }}
-               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-olive/20 rounded-full blur-[120px]" 
+               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-olive/20 rounded-full blur-[80px] md:blur-[120px]" 
             />
          </div>
 
-         <div className="container-custom relative z-10 text-center">
+         <div className="container-custom relative z-10 text-center px-4">
             <AnimatedSection>
-               <h2 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter">
+               <h2 className="text-5xl md:text-8xl font-black mb-6 md:mb-8 tracking-tighter">
                   READY TO <br /> SHIP?
                </h2>
-               <p className="text-xl text-muted-foreground max-w-xl mx-auto mb-12">
+               <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-8 md:mb-12">
                   Join hundreds of businesses that trust us with their logistics. Let's move your business forward.
                </p>
                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button size="lg" className="h-20 px-16 text-xl rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-2xl" asChild>
+                  <Button size="lg" className="h-16 md:h-20 px-10 md:px-16 text-lg md:text-xl rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-2xl" asChild>
                      <Link to="/contact">
-                        Get Started <ArrowRight className="ml-3 w-6 h-6" />
+                        Get Started <ArrowRight className="ml-3 w-5 h-5 md:w-6 md:h-6" />
                      </Link>
                   </Button>
                </motion.div>

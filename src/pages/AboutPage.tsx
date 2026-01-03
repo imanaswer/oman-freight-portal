@@ -1,15 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { 
   motion, 
   useScroll, 
   useTransform, 
   useInView, 
   useMotionValue, 
-  useSpring, 
-  animate,
-  Variants 
+  animate
 } from "framer-motion";
-import { CheckCircle, Globe, Shield, Users, Target, Award, ArrowRight, Anchor, Truck, Plane } from "lucide-react";
+import { CheckCircle, Globe, Shield, Users, ArrowRight, Anchor, Truck, Plane } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 
 import warehouseImage from "@/assets/warehouse.jpg";
@@ -136,7 +134,7 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto px-4" // Added px-4 for safety on small screens
           >
             <motion.div 
               initial={{ width: 0 }}
@@ -144,18 +142,20 @@ const AboutPage = () => {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="h-1 bg-olive mx-auto mb-8"
             />
-            <span className="inline-block text-sm font-bold tracking-[0.3em] text-white/70 uppercase mb-6">
+            <span className="inline-block text-xs md:text-sm font-bold tracking-[0.3em] text-white/70 uppercase mb-4 md:mb-6">
               About Fast Shipping & Logistics
             </span>
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-tight leading-[1.1]">
+            
+            {/* FIX: Reduced text size on mobile (text-4xl) */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 tracking-tight leading-[1.1]">
               <span className="block text-white">Architects of</span>
               <span className="block text-olive-light">
                 Global Trade
               </span>
             </h1>
 
-
-            <p className="text-xl text-white/80 max-w-2xl mx-auto font-light leading-relaxed">
+            {/* FIX: Reduced text size on mobile (text-lg) */}
+            <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto font-light leading-relaxed">
               We are a trusted name in international freight forwarding, providing comprehensive logistics solutions from the Sultanate of Oman to destinations worldwide.
             </p>
           </motion.div>
@@ -169,15 +169,18 @@ const AboutPage = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-background/80 backdrop-blur-xl border border-border/50 shadow-2xl rounded-3xl p-12"
+          // FIX: Reduced padding on mobile (p-6)
+          className="bg-background/80 backdrop-blur-xl border border-border/50 shadow-2xl rounded-3xl p-6 md:p-12"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-border/50">
+          {/* FIX: Removed divide-x on mobile to look cleaner */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 md:divide-x divide-border/50">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center px-4">
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2 tabular-nums">
+              <div key={index} className="text-center px-2 md:px-4">
+                {/* FIX: Smaller stats on mobile */}
+                <div className="text-3xl md:text-5xl font-bold text-primary mb-2 tabular-nums">
                   <Counter value={stat.value} suffix={stat.suffix} />
                 </div>
-                <span className="text-xs md:text-sm font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</span>
+                <span className="text-[10px] md:text-sm font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</span>
               </div>
             ))}
           </div>
@@ -187,16 +190,16 @@ const AboutPage = () => {
       {/* 3. Company Story (Split Layout) */}
       <section className="section-padding bg-background relative overflow-hidden">
         {/* Decorative Background Elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/30 rounded-full blur-[100px] -z-10" />
+        <div className="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-secondary/30 rounded-full blur-[100px] -z-10" />
         
         <div className="container-custom">
-           {/*  - Using a specific visual request here would aid comprehension of their reach */}
-           
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          {/* FIX: Reduced gap on mobile */}
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             <AnimatedSection>
               <span className="text-olive font-bold tracking-widest uppercase text-sm mb-4 block">Our Story</span>
-              <h2 className="mb-8 text-4xl md:text-5xl leading-tight">Bridging Distances, <br/>Connecting Markets.</h2>
-              <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
+              {/* FIX: Smaller headings for mobile */}
+              <h2 className="mb-6 md:mb-8 text-3xl md:text-5xl leading-tight">Bridging Distances, <br/>Connecting Markets.</h2>
+              <div className="space-y-6 text-muted-foreground text-base md:text-lg leading-relaxed">
                 <p>
                   Established in Muscat, <strong className="text-primary font-semibold">FAST SHIPPING & LOGISTICS</strong> has built a reputation for excellence
                   in the freight forwarding industry. We specialize in connecting businesses in Oman
@@ -207,25 +210,25 @@ const AboutPage = () => {
                   international trade. We navigate customs regulations, coordinate multi-modal shipments,
                   and ensure your cargo arrives safely and on schedule.
                 </p>
-                <div className="flex gap-4 pt-4">
-                   <div className="flex flex-col gap-1 items-center p-4 bg-secondary/50 rounded-xl min-w-[100px]">
-                      <Plane className="w-6 h-6 text-olive" />
-                      <span className="text-xs font-bold uppercase">Air</span>
+                <div className="flex flex-wrap gap-4 pt-4">
+                   <div className="flex flex-col gap-1 items-center p-3 md:p-4 bg-secondary/50 rounded-xl min-w-[80px] md:min-w-[100px]">
+                      <Plane className="w-5 h-5 md:w-6 md:h-6 text-olive" />
+                      <span className="text-[10px] md:text-xs font-bold uppercase">Air</span>
                    </div>
-                   <div className="flex flex-col gap-1 items-center p-4 bg-secondary/50 rounded-xl min-w-[100px]">
-                      <Anchor className="w-6 h-6 text-olive" />
-                      <span className="text-xs font-bold uppercase">Sea</span>
+                   <div className="flex flex-col gap-1 items-center p-3 md:p-4 bg-secondary/50 rounded-xl min-w-[80px] md:min-w-[100px]">
+                      <Anchor className="w-5 h-5 md:w-6 md:h-6 text-olive" />
+                      <span className="text-[10px] md:text-xs font-bold uppercase">Sea</span>
                    </div>
-                   <div className="flex flex-col gap-1 items-center p-4 bg-secondary/50 rounded-xl min-w-[100px]">
-                      <Truck className="w-6 h-6 text-olive" />
-                      <span className="text-xs font-bold uppercase">Land</span>
+                   <div className="flex flex-col gap-1 items-center p-3 md:p-4 bg-secondary/50 rounded-xl min-w-[80px] md:min-w-[100px]">
+                      <Truck className="w-5 h-5 md:w-6 md:h-6 text-olive" />
+                      <span className="text-[10px] md:text-xs font-bold uppercase">Land</span>
                    </div>
                 </div>
               </div>
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
-              <div className="relative group">
+              <div className="relative group mt-8 lg:mt-0">
                 {/* Back Decoration */}
                 <div className="absolute -inset-4 bg-gradient-to-tr from-olive/20 to-transparent rounded-[2rem] -z-10 group-hover:scale-105 transition-transform duration-700" />
                 
@@ -234,7 +237,8 @@ const AboutPage = () => {
                   <RevealImage 
                     src={warehouseImage}
                     alt="Our modern warehouse facility"
-                    className="h-[500px]"
+                    // FIX: Smaller image height on mobile (300px) vs desktop (500px)
+                    className="h-[300px] md:h-[500px]"
                   />
                 </div>
               </div>
@@ -248,17 +252,17 @@ const AboutPage = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1e293b,transparent)] opacity-40"></div>
         
         <div className="container-custom relative z-10">
-          <AnimatedSection className="text-center max-w-2xl mx-auto mb-20">
+          <AnimatedSection className="text-center max-w-2xl mx-auto mb-10 md:mb-20">
             <span className="inline-block text-sm font-bold tracking-widest text-olive-light uppercase mb-4">
               Our Values
             </span>
-            <h2 className="mb-6 text-white">What Drives Us Forward</h2>
-            <p className="text-white/70 text-lg">
+            <h2 className="mb-4 md:mb-6 text-white text-3xl md:text-5xl">What Drives Us Forward</h2>
+            <p className="text-white/70 text-base md:text-lg">
               Our core values guide every decision we make and every shipment we handle.
             </p>
           </AnimatedSection>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {values.map((value, index) => (
               <motion.div
                 key={value.title}
@@ -267,13 +271,13 @@ const AboutPage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2, duration: 0.5 }}
                 whileHover={{ y: -15 }}
-                className="group bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-10 hover:bg-white/10 transition-colors duration-300"
+                className="group bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 md:p-10 hover:bg-white/10 transition-colors duration-300"
               >
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-olive to-olive-light flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <value.icon className="w-8 h-8 text-white" />
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-olive to-olive-light flex items-center justify-center mb-6 md:mb-8 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <value.icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-white group-hover:text-olive-light transition-colors">{value.title}</h3>
-                <p className="text-white/70 leading-relaxed">{value.description}</p>
+                <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white group-hover:text-olive-light transition-colors">{value.title}</h3>
+                <p className="text-sm md:text-base text-white/70 leading-relaxed">{value.description}</p>
               </motion.div>
             ))}
           </div>
@@ -283,12 +287,13 @@ const AboutPage = () => {
       {/* 5. Approach & Capabilities (Interactive Grid) */}
       <section className="section-padding bg-secondary/30">
         <div className="container-custom">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+          {/* FIX: Reduced gap on mobile */}
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-24">
             
             {/* Left: Approach */}
             <AnimatedSection>
-              <h2 className="mb-8">Our Approach</h2>
-              <div className="space-y-8">
+              <h2 className="mb-6 md:mb-8 text-3xl md:text-4xl">Our Approach</h2>
+              <div className="space-y-6 md:space-y-8">
                  {[
                     { title: "Tailored Solutions", desc: "Every business has unique logistics requirements. We take the time to understand yours." },
                     { title: "Strict Compliance", desc: "We stay current with international trade regulations to ensure smooth clearance." },
@@ -300,7 +305,7 @@ const AboutPage = () => {
                        </div>
                        <div>
                           <h4 className="text-lg font-bold mb-2">{item.title}</h4>
-                          <p className="text-muted-foreground">{item.desc}</p>
+                          <p className="text-sm md:text-base text-muted-foreground">{item.desc}</p>
                        </div>
                     </div>
                  ))}
@@ -309,9 +314,10 @@ const AboutPage = () => {
 
             {/* Right: Capabilities Grid */}
             <AnimatedSection delay={0.2}>
-               <div className="bg-card border border-border rounded-3xl p-8 lg:p-10 shadow-xl">
-                  <h3 className="text-2xl font-bold mb-8">Our Capabilities</h3>
-                  <div className="grid sm:grid-cols-2 gap-4">
+               {/* FIX: Reduced padding on mobile */}
+               <div className="bg-card border border-border rounded-3xl p-6 lg:p-10 shadow-xl">
+                  <h3 className="text-xl md:text-2xl font-bold mb-6 md:mb-8">Our Capabilities</h3>
+                  <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
                     {capabilities.map((capability, index) => (
                       <motion.div
                         key={capability}

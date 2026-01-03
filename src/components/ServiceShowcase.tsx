@@ -34,21 +34,20 @@ const ServiceShowcase = ({
   const scale = useTransform(scrollYProgress, [0, 1], [1.1, 1.2]); // Subtle zoom on scroll
 
   return (
-    <section ref={containerRef} className="py-24 relative overflow-hidden">
-      <div className={`container-custom grid lg:grid-cols-2 gap-12 lg:gap-24 items-center ${reverse ? "lg:flex-row-reverse" : ""}`}>
+    // FIX: Reduced padding on mobile (py-12) -> Normal on desktop (md:py-24)
+    <section ref={containerRef} className="py-12 md:py-24 relative overflow-hidden">
+      {/* FIX: 1 Column on mobile (grid-cols-1) -> 2 Columns on Desktop (lg:grid-cols-2) */}
+      <div className={`container-custom grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center ${reverse ? "lg:flex-row-reverse" : ""}`}>
         
         {/* --- CONTENT SIDE --- */}
         <div className={`relative ${reverse ? "lg:order-2 pl-0 lg:pl-10" : "pr-0 lg:pr-10"}`}>
           
-          {/* FIXED VISIBILITY: 
-             Using 'text-stroke' creates a crisp outline that pops against dark backgrounds.
-             We removed the 'opacity' prop and used RGBA alpha instead.
-          */}
+          {/* FIX: Hidden on mobile to prevent overlap (hidden md:block) */}
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="absolute -top-32 -left-12 z-0 pointer-events-none select-none"
+            className="hidden md:block absolute -top-32 -left-12 z-0 pointer-events-none select-none"
           >
             <motion.span 
               animate={{ y: [0, 20, 0] }} 
@@ -64,12 +63,13 @@ const ServiceShowcase = ({
             </motion.span>
           </motion.div>
 
-          <div className="relative z-10 pt-10">
+          {/* FIX: Reduced top padding on mobile (pt-0) */}
+          <div className="relative z-10 pt-0 md:pt-10">
              <motion.div
                initial={{ opacity: 0, y: 20 }}
                animate={isInView ? { opacity: 1, y: 0 } : {}}
                transition={{ duration: 0.6, delay: 0.2 }}
-               className="flex items-center gap-4 mb-6"
+               className="flex items-center gap-4 mb-4 md:mb-6"
              >
                 {/* Glowing Line Accent */}
                 <div className="h-[2px] w-12 bg-primary shadow-[0_0_15px_var(--primary)]"></div>
@@ -80,7 +80,8 @@ const ServiceShowcase = ({
                initial={{ opacity: 0, y: 20 }}
                animate={isInView ? { opacity: 1, y: 0 } : {}}
                transition={{ duration: 0.6, delay: 0.3 }}
-               className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white tracking-tighter"
+               // FIX: Responsive font size (text-3xl -> text-6xl)
+               className="text-3xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight text-white tracking-tighter"
              >
                {title}
              </motion.h3>
@@ -89,7 +90,7 @@ const ServiceShowcase = ({
                initial={{ opacity: 0, y: 20 }}
                animate={isInView ? { opacity: 1, y: 0 } : {}}
                transition={{ duration: 0.6, delay: 0.4 }}
-               className="text-muted-foreground text-lg mb-10 leading-relaxed font-light max-w-lg"
+               className="text-muted-foreground text-base md:text-lg mb-8 md:mb-10 leading-relaxed font-light max-w-lg"
              >
                {description}
              </motion.p>
@@ -110,7 +111,7 @@ const ServiceShowcase = ({
         </div>
 
         {/* --- IMAGE SIDE (With Curtain Reveal) --- */}
-        <div className={`${reverse ? "lg:order-1" : ""} relative group z-10`}>
+        <div className={`${reverse ? "lg:order-1" : ""} relative group z-10 mt-8 lg:mt-0`}>
            {/* Decorative Border Ring */}
            <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
@@ -119,7 +120,8 @@ const ServiceShowcase = ({
               className="absolute inset-0 border border-white/10 rounded-[2rem] translate-x-6 translate-y-6 -z-10 group-hover:translate-x-8 group-hover:translate-y-8 transition-transform duration-500"
            />
 
-           <div className="relative rounded-[2rem] overflow-hidden shadow-2xl h-[400px] md:h-[600px] border border-white/5">
+           {/* FIX: Height adjusted for mobile (h-[300px]) -> Desktop (md:h-[600px]) */}
+           <div className="relative rounded-[2rem] overflow-hidden shadow-2xl h-[300px] md:h-[600px] border border-white/5">
               {/* Curtain (The Reveal) */}
               <motion.div 
                  initial={{ height: "100%" }}

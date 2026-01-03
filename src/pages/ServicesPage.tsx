@@ -92,7 +92,8 @@ const Preloader = () => {
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="text-white text-4xl font-bold tracking-tighter"
+        // FIX: Responsive text size
+        className="text-white text-2xl md:text-4xl font-bold tracking-tighter text-center px-4"
       >
         FAST SHIPPING & LOGISTICS
       </motion.div>
@@ -105,7 +106,8 @@ const Marquee = ({ text, direction = "left" }: { text: string; direction?: "left
   return (
     <div className="flex overflow-hidden whitespace-nowrap opacity-[0.03] select-none pointer-events-none absolute top-1/2 -translate-y-1/2 w-full">
       <motion.div
-        className="flex gap-20 text-[15rem] font-black uppercase text-white leading-none"
+        // FIX: Scaled down text for mobile (text-[5rem] -> text-[15rem])
+        className="flex gap-10 md:gap-20 text-[5rem] md:text-[15rem] font-black uppercase text-white leading-none"
         animate={{
           x: direction === "left" ? [0, -1000] : [-1000, 0],
         }}
@@ -193,7 +195,8 @@ const ServiceSection = ({ service, index }: { service: typeof services[0], index
   const isEven = index % 2 === 0;
 
   return (
-    <section id={service.id} ref={ref} className="py-32 relative scroll-mt-20 overflow-hidden">
+    // FIX: Reduced padding for mobile (py-16) -> desktop (py-32)
+    <section id={service.id} ref={ref} className="py-16 md:py-32 relative scroll-mt-20 overflow-hidden">
       {/* Decorative Line */}
       <motion.div 
         style={{ scaleX: isInView ? 1 : 0 }} 
@@ -203,36 +206,38 @@ const ServiceSection = ({ service, index }: { service: typeof services[0], index
 
       <div className="container-custom relative z-10">
       
-        <div className={`grid lg:grid-cols-2 gap-20 items-center ${!isEven ? '' : ''}`}>
+        {/* FIX: Reduced gap for mobile (gap-12) -> desktop (gap-20) */}
+        <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${!isEven ? '' : ''}`}>
           
           {/* Content Side */}
           <motion.div 
             style={{ y: yText }}
             className={`${!isEven ? "lg:order-2" : "lg:order-1"}`}
           >
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-6 md:mb-8">
               <motion.div 
                 initial={{ scale: 0 }}
                 animate={isInView ? { scale: 1 } : {}}
                 transition={{ type: "spring", duration: 0.8 }}
-                className="w-16 h-16 rounded-full bg-[#0a0f1c] border border-white/10 flex items-center justify-center text-white relative overflow-hidden group"
+                className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#0a0f1c] border border-white/10 flex items-center justify-center text-white relative overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-white/10 scale-0 group-hover:scale-100 transition-transform rounded-full" />
-                <service.icon className="w-6 h-6 relative z-10" />
+                <service.icon className="w-5 h-5 md:w-6 md:h-6 relative z-10" />
               </motion.div>
               <div className="overflow-hidden">
                 <motion.span 
                   initial={{ y: "100%" }}
                   animate={isInView ? { y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="block text-sm font-bold text-olive tracking-[0.2em] uppercase"
+                  className="block text-xs md:text-sm font-bold text-olive tracking-[0.2em] uppercase"
                 >
                   {service.subtitle}
                 </motion.span>
               </div>
             </div>
 
-            <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-[0.9]">
+            {/* FIX: Responsive Title Size */}
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 md:mb-6 leading-[1.1] md:leading-[0.9]">
               <SplitText text={service.title} />
             </h2>
 
@@ -240,7 +245,7 @@ const ServiceSection = ({ service, index }: { service: typeof services[0], index
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-muted-foreground text-lg md:text-xl mb-10 leading-relaxed max-w-lg"
+              className="text-muted-foreground text-base md:text-lg lg:text-xl mb-8 md:mb-10 leading-relaxed max-w-lg"
             >
               {service.description}
             </motion.p>
@@ -249,12 +254,13 @@ const ServiceSection = ({ service, index }: { service: typeof services[0], index
                initial={{ opacity: 0 }}
                animate={isInView ? { opacity: 1 } : {}}
                transition={{ delay: 0.6 }}
-               className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-8 mb-10 hover:bg-card/50 transition-colors"
+               // FIX: Adjusted padding for mobile
+               className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 md:p-8 mb-8 md:mb-10 hover:bg-card/50 transition-colors"
             >
-              <h3 className="text-sm font-bold text-foreground mb-6 flex items-center gap-2 uppercase tracking-wide">
+              <h3 className="text-sm font-bold text-foreground mb-4 md:mb-6 flex items-center gap-2 uppercase tracking-wide">
                 <Check className="w-4 h-4 text-olive" /> Service Inclusions
               </h3>
-              <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 md:gap-y-4 md:gap-x-8">
                 {service.details.map((detail, i) => (
                   <motion.div 
                     key={i}
@@ -273,7 +279,7 @@ const ServiceSection = ({ service, index }: { service: typeof services[0], index
             </motion.div>
 
             <MagneticButton>
-              <Button size="lg" className="rounded-full px-8 h-14 text-base bg-foreground text-background hover:bg-foreground/90 transition-all" asChild>
+              <Button size="lg" className="w-full md:w-auto rounded-full px-8 h-12 md:h-14 text-base bg-foreground text-background hover:bg-foreground/90 transition-all" asChild>
                 <Link to="/contact">
                   Get a Quote <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
@@ -285,17 +291,17 @@ const ServiceSection = ({ service, index }: { service: typeof services[0], index
           <div className={`${!isEven ? "lg:order-1" : "lg:order-2"}`}>
             <motion.div 
               style={{ opacity }}
-              className="relative aspect-[4/5] md:aspect-square"
+              className="relative aspect-[4/3] md:aspect-square"
             >
                {/* Background Blobs for Atmosphere */}
                <motion.div 
                  animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
                  transition={{ duration: 10, repeat: Infinity }}
-                 className="absolute -top-10 -right-10 w-64 h-64 bg-olive/10 rounded-full blur-[80px] -z-10" 
+                 className="absolute -top-10 -right-10 w-40 h-40 md:w-64 md:h-64 bg-olive/10 rounded-full blur-[80px] -z-10" 
                />
 
                {service.image ? (
-                  <div className="w-full h-full relative group rounded-[2rem] overflow-hidden">
+                  <div className="w-full h-full relative group rounded-2xl md:rounded-[2rem] overflow-hidden">
                      {/* Image Parallax Container */}
                      <motion.div style={{ scale: scaleImage, y: yImage }} className="w-full h-full">
                         <img 
@@ -310,26 +316,26 @@ const ServiceSection = ({ service, index }: { service: typeof services[0], index
                      
                      {/* Floating 3D Badge */}
                      <motion.div 
-                       className="absolute bottom-8 right-8 z-30 bg-white/5 backdrop-blur-xl border border-white/10 px-6 py-4 rounded-2xl shadow-2xl"
+                       className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-30 bg-white/5 backdrop-blur-xl border border-white/10 px-4 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl shadow-2xl"
                        initial={{ y: 50, opacity: 0 }}
                        animate={isInView ? { y: 0, opacity: 1 } : {}}
                        transition={{ delay: 0.8, type: "spring" }}
                        whileHover={{ scale: 1.05 }}
                      >
-                       <div className="flex items-center gap-3 text-white">
-                          <Globe className="w-5 h-5 text-olive" />
+                       <div className="flex items-center gap-2 md:gap-3 text-white">
+                          <Globe className="w-4 h-4 md:w-5 md:h-5 text-olive" />
                           <div>
-                            <span className="block text-[10px] uppercase text-white/50 tracking-widest">Coverage</span>
-                            <span className="text-sm font-bold tracking-wider">WORLDWIDE</span>
+                            <span className="block text-[8px] md:text-[10px] uppercase text-white/50 tracking-widest">Coverage</span>
+                            <span className="text-xs md:text-sm font-bold tracking-wider">WORLDWIDE</span>
                           </div>
                        </div>
                      </motion.div>
                   </div>
                ) : (
                   // Fallback for Customs
-                  <div className="w-full h-full bg-[#0a0f1c] rounded-[2rem] relative overflow-hidden flex items-center justify-center border border-white/5">
+                  <div className="w-full h-full bg-[#0a0f1c] rounded-2xl md:rounded-[2rem] relative overflow-hidden flex items-center justify-center border border-white/5">
                      <Marquee text="CLEARANCE • CUSTOMS •" direction="right" />
-                     <service.icon className="w-32 h-32 text-white/5 relative z-10" />
+                     <service.icon className="w-20 h-20 md:w-32 md:h-32 text-white/5 relative z-10" />
                   </div>
                )}
             </motion.div>
@@ -374,6 +380,7 @@ const QuickNav = () => {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
+          // FIX: Hidden on mobile (hidden lg:flex)
           className="fixed bottom-10 left-1/2 -translate-x-1/2 z-40 hidden lg:flex bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl p-1.5 gap-1"
         >
           {services.map((s) => (
@@ -419,31 +426,32 @@ const ServicesPage = () => {
       <QuickNav />
 
       {/* --- HERO SECTION --- */}
-      <section className="relative min-h-screen flex items-center justify-center bg-[#0a0f1c] text-white">
+      <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center bg-[#0a0f1c] text-white">
 
         {/* Background Marquees */}
-        <div className="absolute inset-0 flex flex-col justify-center opacity-10 pointer-events-none">
+        <div className="absolute inset-0 flex flex-col justify-center opacity-10 pointer-events-none overflow-hidden">
            <div className="rotate-[-5deg] scale-110">
               <Marquee text="LOGISTICS • FREIGHT • CARGO •" direction="left" />
            </div>
         </div>
 
-        <div className="container-custom relative z-10 text-center pt-20">
+        <div className="container-custom relative z-10 text-center pt-20 px-4">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="max-w-6xl mx-auto">
             
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: "auto" }}
               transition={{ delay: 0.8, duration: 0.8 }}
-              className="inline-block overflow-hidden mb-6"
+              className="inline-block overflow-hidden mb-4 md:mb-6"
             >
-              <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-sm font-medium">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 md:px-5 md:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-xs md:text-sm font-medium">
                 <span className="w-2 h-2 rounded-full bg-olive animate-pulse" />
                 Global Supply Chain Solutions
               </span>
             </motion.div>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 tracking-tighter leading-[0.95]">
+            {/* FIX: Scaled down Title (text-5xl) -> Desktop (text-9xl) */}
+            <h1 className="text-5xl md:text-8xl lg:text-9xl font-black mb-6 md:mb-8 tracking-tighter leading-[0.95]">
               <span className="block">
                 <motion.span>BEYOND</motion.span>
               </span>
@@ -452,23 +460,21 @@ const ServicesPage = () => {
                 <motion.span>BORDERS</motion.span>
               </span>
             </h1>
-
             
-            <p className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto leading-relaxed font-light mb-12">
+            <p className="text-lg md:text-xl lg:text-2xl text-white/60 max-w-2xl mx-auto leading-relaxed font-light mb-10 md:mb-12">
               <SplitText text="Precision logistics for the modern world." delay={0.5} />
-              <br />
+              <br className="hidden md:block" />
               <SplitText text="We move the impossible." delay={0.8} />
             </p>
-
 
             <motion.div 
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ delay: 1 }}
-               className="flex justify-center gap-6"
+               className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6"
             >
                <MagneticButton>
-                 <Button size="lg" className="h-16 px-10 text-lg rounded-full bg-white text-black hover:bg-gray-200 transition-colors shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                 <Button size="lg" className="w-full sm:w-auto h-14 md:h-16 px-10 text-lg rounded-full bg-white text-black hover:bg-gray-200 transition-colors shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
                     Explore Services
                  </Button>
                </MagneticButton>
@@ -478,27 +484,27 @@ const ServicesPage = () => {
 
         {/* Scroll Indicator */}
         <motion.div 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-           <div className="w-[1px] h-20 bg-gradient-to-b from-transparent via-white/50 to-transparent" />
+           <div className="w-[1px] h-12 md:h-20 bg-gradient-to-b from-transparent via-white/50 to-transparent" />
         </motion.div>
       </section>
 
       {/* --- SERVICES SECTION --- */}
-      <div className="relative py-20 bg-background">
+      <div className="relative py-12 md:py-20 bg-background">
         {services.map((service, index) => (
           <ServiceSection key={service.id} service={service} index={index} />
         ))}
       </div>
 
       {/* --- CTA SECTION --- */}
-      <section className="h-[80vh] relative overflow-hidden bg-[#0a0f1c] flex items-center justify-center">
+      <section className="h-[70vh] md:h-[80vh] relative overflow-hidden bg-[#0a0f1c] flex items-center justify-center">
         {/* Animated Background Mesh */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#ffffff05_1px,transparent_1px)] bg-[size:30px_30px] md:bg-[size:40px_40px] opacity-20"></div>
         
-        <div className="container-custom relative z-10">
+        <div className="container-custom relative z-10 px-4">
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -506,15 +512,16 @@ const ServicesPage = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tighter">
+            {/* FIX: Title resizing */}
+            <h2 className="text-4xl md:text-7xl lg:text-8xl font-black text-white mb-6 md:mb-8 tracking-tighter">
               READY TO <br /> <span className="text-olive">SHIP?</span>
             </h2>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-8 md:mt-12">
               <MagneticButton>
-                <Button size="lg" className="h-20 px-12 text-xl rounded-full bg-white text-black hover:scale-105 transition-transform duration-300" asChild>
+                <Button size="lg" className="h-16 md:h-20 px-8 md:px-12 text-lg md:text-xl rounded-full bg-white text-black hover:scale-105 transition-transform duration-300" asChild>
                   <a href="mailto:info@fastshipping.om">
                     Start a Project
-                    <ArrowRight className="w-6 h-6 ml-3" />
+                    <ArrowRight className="w-5 h-5 md:w-6 md:h-6 ml-3" />
                   </a>
                 </Button>
               </MagneticButton>
