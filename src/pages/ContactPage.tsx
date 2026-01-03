@@ -292,7 +292,7 @@ const ContactPage = () => {
                           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                              <Button size="lg" variant="outline" className="w-full h-12 md:h-14 text-base font-bold border-white/10 text-white hover:bg-white/5 hover:text-white hover:border-white/20 backdrop-blur-md" asChild>
                                 <a
-                                   href="https://wa.me/96812345678"
+                                   href="https://wa.me/96128466"
                                    target="_blank"
                                    rel="noopener noreferrer"
                                 >
