@@ -315,26 +315,27 @@ const ContactPage = () => {
       </section>
 
       {/* --- MAP VISUALIZATION --- */}
-      <section className="py-20 relative overflow-hidden">
-         <div className="container-custom relative z-10">
+      <section className="py-20">
+         <div className="container-custom">
             <AnimatedSection>
-               <div className="relative rounded-[2rem] overflow-hidden border border-white/10 bg-[#0f172a] h-[300px] flex items-center justify-center group">
-                  {/* Faux Map Background Pattern */}
-                  <div className="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center mix-blend-overlay grayscale group-hover:scale-105 transition-transform duration-1000"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1c] to-transparent"></div>
-
-                  {/* Pulsing Location Dot */}
-                  <div className="relative z-10 flex flex-col items-center gap-4">
+               <div className="relative rounded-[2rem] overflow-hidden border border-white/10 bg-[#0f172a] h-[300px] group">
+                  {/* Map Image */}
+                  <div className="absolute inset-0 opacity-30 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center mix-blend-overlay grayscale"></div>
+                  
+                  {/* FIX 5: Map Dot Positioned on Oman (Middle East) */}
+                  {/* Adjusted top/left percentages to hit the Arabian Peninsula on this specific map projection */}
+                  <div className="absolute top-[42%] left-[62%] flex flex-col items-center group-hover:-translate-y-2 transition-transform duration-500">
                      <div className="relative">
-                        <div className="w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_var(--primary)] relative z-10"></div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-primary/30 rounded-full animate-ping"></div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary/10 rounded-full blur-xl"></div>
+                        <div className="w-3 h-3 bg-primary rounded-full shadow-[0_0_20px_var(--primary)] relative z-10"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-primary/30 rounded-full animate-ping"></div>
                      </div>
-                     <div className="text-center">
-                        <h3 className="text-xl font-bold text-white">Muscat Headquarters</h3>
-                        <p className="text-sm text-muted-foreground">Sultanate of Oman</p>
+                     <div className="mt-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 whitespace-nowrap">
+                        <p className="text-xs font-bold text-white">Muscat, Oman</p>
                      </div>
                   </div>
+
+                  {/* Overlay for Click */}
+                  <a href="https://www.google.com/maps/search/?api=1&query=Muscat+Oman" target="_blank" className="absolute inset-0 z-20 cursor-pointer" aria-label="Open in Google Maps"></a>
                </div>
             </AnimatedSection>
          </div>

@@ -285,32 +285,39 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* 4. SERVICES GRID (Spotlight Effect) */}
-      <section className="py-32 bg-[#0a0f1c] text-white relative">
-         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e293b,transparent)] opacity-40"></div>
-         
-         <div className="container-custom hero-container relative z-10">
+     
 
-            <div className="text-center max-w-3xl mx-auto mb-20">
-               <h2 className="text-4xl md:text-5xl font-bold mb-6">Comprehensive Logistics</h2>
-               <p className="text-slate-400 text-lg">Explore our full range of services designed to streamline your supply chain.</p>
+      {/* 4. SERVICES GRID */}
+      <section className="py-32 bg-[#0a0f1c] text-white relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e293b,transparent)] opacity-40"></div>
+        
+        <div className="container-custom relative z-10">
+            <div className="text-left max-w-3xl mb-20">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">Comprehensive Logistics</h2>
+              <p className="text-slate-400 text-lg">Everything you need to move anything, anywhere.</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-               {services.map((service) => (
-                  <SpotlightCard key={service.title} className="rounded-2xl p-8 hover:bg-white/5 transition-colors duration-500">
-                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-olive to-emerald-600 flex items-center justify-center mb-6 shadow-lg">
-                        <service.icon className="w-7 h-7 text-white" />
-                     </div>
-                     <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                     <p className="text-slate-400 leading-relaxed mb-6">{service.description}</p>
-                     <div className="flex items-center text-sm font-bold text-olive-light uppercase tracking-wider group-hover:gap-2 transition-all">
-                        View Details <ArrowRight className="w-4 h-4 ml-2" />
-                     </div>
-                  </SpotlightCard>
-               ))}
+              {services.map((service) => (
+                  // FIX: Removed SpotlightCard wobble. Made entire card a Link.
+                  <Link 
+                    key={service.title} 
+                    to="/services" 
+                    className="group block rounded-2xl p-8 border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/10 transition-all duration-300"
+                  >
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <service.icon className="w-7 h-7 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-primary transition-colors">{service.title}</h3>
+                    <p className="text-slate-400 leading-relaxed mb-6 text-sm">{service.description}</p>
+                    
+                    <div className="flex items-center text-sm font-bold text-white/50 uppercase tracking-wider group-hover:text-white transition-colors">
+                        View Details <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </Link>
+              ))}
             </div>
-         </div>
+        </div>
       </section>
 
       {/* 5. STATS / TRUST SECTION */}
