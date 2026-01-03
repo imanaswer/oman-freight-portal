@@ -1,74 +1,65 @@
-# Welcome to your Lovable project
+# 🚢 Fast Shipping & Logistics
 
-## Project info
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-premium-success.svg?style=for-the-badge)
+![Tech](https://img.shields.io/badge/react-typescript-black?style=for-the-badge&logo=react)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+> A high-performance, cinematic logistics platform featuring the **"Midnight Cargo"** design system.
 
-## How can I edit this code?
+## ✨ Project Overview
 
-There are several ways of editing your application.
+This project represents a **$10,000+ Agency-Grade** website built for a modern logistics company. It moves away from standard templates into a realm of **architectural design**, featuring deep onyx backgrounds, luminous cobalt accents, and physics-based interactions.
 
-**Use Lovable**
+### 🎨 Design System: "Midnight Cargo"
+* **Palette:** Deep Onyx (`#020617`) & Electric Cobalt (`#3b82f6`).
+* **Typography:** **Manrope** (Variable font) with Swiss-style left alignment.
+* **Atmosphere:** Cinematic grain, technical grid overlays, and vignette borders.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 🚀 Key Features
 
-Changes made via Lovable will be committed automatically to this repo.
+### 💎 Premium Interactions
+* **Spotlight Cards:** Borders that glow and reveal content based on cursor position.
+* **3D Tilt Effects:** Physics-based tilting on interactive elements.
+* **Magnetic Navigation:** Links that gently pull towards your cursor.
+* **Parallax Scroll:** Images and backgrounds move at different speeds for depth.
 
-**Use your preferred IDE**
+### 🎬 Cinematic Animations
+* **Curtain Reveals:** Images are revealed via sliding masks.
+* **Split-Text Entry:** Headlines animate in character-by-character.
+* **Hollow Typography:** Large background numbers use architectural text-strokes.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠️ Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+* **Framework:** [React](https://reactjs.org/) + [Vite](https://vitejs.dev/)
+* **Language:** [TypeScript](https://www.typescriptlang.org/)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Animation:** [Framer Motion](https://www.framer.com/motion/)
+* **Icons:** [Lucide React](https://lucide.dev/)
+* **Routing:** [React Router DOM](https://reactrouter.com/)
 
-Follow these steps:
+## ⚡ Getting Started
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/your-username/fast-shipping-logistics.git](https://github.com/your-username/fast-shipping-logistics.git)
+    ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 📂 Project Structure
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-# oman-freight-portal
+```text
+src/
+├── assets/         # Images and static files
+├── components/     # Reusable UI components (Buttons, Cards, Showcases)
+├── pages/          # Route pages (Home, Services, Contact)
+├── lib/            # Utilities (cn, theme configuration)
+└── index.css       # Global styles & Tailwind directives
